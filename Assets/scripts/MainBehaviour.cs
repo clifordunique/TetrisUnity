@@ -238,11 +238,17 @@ public class MainBehaviour : MonoBehaviour
         }
         else if (currentPiece == 3)
         {
-
+            if (rotation == 0) rotateI(new int[4] { 1, 0, 1, 0 }, new int[4] { -1, -2, 1, 0 });
+            else if (rotation == 1) rotateI(new int[4] { -1, -2, 1, 0 }, new int[4] { -1, 0, -1, 0 });
+            else if (rotation == 2) rotateI(new int[4] { -1, 0, -1, 0 }, new int[4] { 1, 2, -1, 0 });
+            else if (rotation == 3) rotateI(new int[4] { 1, 2, -1, 0 }, new int[4] { 1, 0, 1, 0 });
         }
         else if (currentPiece == 4)
         {
-
+            if (rotation == 0) rotateI(new int[4] { 1, 0, 1, 0 }, new int[4] { -1, -2, 1, 0 });
+            else if (rotation == 1) rotateI(new int[4] { -1, -2, 1, 0 }, new int[4] { -1, 0, -1, 0 });
+            else if (rotation == 2) rotateI(new int[4] { -1, 0, -1, 0 }, new int[4] { 1, 2, -1, 0 });
+            else if (rotation == 3) rotateI(new int[4] { 1, 2, -1, 0 }, new int[4] { 1, 0, 1, 0 });
         }
         else if (currentPiece == 5)
         {
