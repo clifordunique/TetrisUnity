@@ -144,6 +144,7 @@ public class MainBehaviour : MonoBehaviour
             field[yy[i], xx[i]].Number = i + 1;
             TetrisPiece[i] = Instantiate(prefabTetramino, new Vector3(xx[i], yy[i], 0), prefabTetramino.transform.rotation);
             TetrisPiece[i].GetComponent<Renderer>().material.SetColor("_Color", color);
+            TetrisPiece[i].name = "Tetramino";
             currentPiece = pieceIndex;
             Debug.Log("spawning-" + color.ToString());
         }
@@ -223,7 +224,6 @@ public class MainBehaviour : MonoBehaviour
 
         if (currentPiece == 0)
         {
-
             if (rotation == 0) rotateI(new int[4] { 2, 1, 0, -1 }, new int[4] { 1, 0, -1, -2 });
             else if (rotation == 1) rotateI(new int[4] { 1, 0, -1, -2 }, new int[4] { -2, -1, 0, 1 });
             else if (rotation == 2) rotateI(new int[4] { -2, -1, 0, 1 }, new int[4] { -1, 0, 1, 2 });
@@ -245,18 +245,24 @@ public class MainBehaviour : MonoBehaviour
         }
         else if (currentPiece == 4)
         {
-            if (rotation == 0) rotateI(new int[4] { 1, 0, 1, 0 }, new int[4] { -1, -2, 1, 0 });
-            else if (rotation == 1) rotateI(new int[4] { -1, -2, 1, 0 }, new int[4] { -1, 0, -1, 0 });
-            else if (rotation == 2) rotateI(new int[4] { -1, 0, -1, 0 }, new int[4] { 1, 2, -1, 0 });
-            else if (rotation == 3) rotateI(new int[4] { 1, 2, -1, 0 }, new int[4] { 1, 0, 1, 0 });
+            if (rotation == 0) rotateI(new int[4] { 2, 1, 0, -1 }, new int[4] { 0, -1, 0, -1 });
+            else if (rotation == 1) rotateI(new int[4] { 0, -1, 0, -1 }, new int[4] { -2, -1, 0, 1 });
+            else if (rotation == 2) rotateI(new int[4] { -2, -1, 0, 1 }, new int[4] { 0, 1, 0, 1 });
+            else if (rotation == 3) rotateI(new int[4] { 0, 1, 0, 1 }, new int[4] { 2, 1, 0, -1 });
         }
         else if (currentPiece == 5)
         {
-
+            if (rotation == 0) rotateI(new int[4] { 2, 1, 0, -1 }, new int[4] { 0, 1, 0, -1 });
+            else if (rotation == 1) rotateI(new int[4] { 0, 1, 0, -1 }, new int[4] { -2, -1, 0, 1 });
+            else if (rotation == 2) rotateI(new int[4] { -2, -1, 0, 1 }, new int[4] { 0, -1, 0, 1 });
+            else if (rotation == 3) rotateI(new int[4] { 0, -1, 0, 1 }, new int[4] { 2, 1, 0, -1 });
         }
         else if (currentPiece == 6)
         {
-
+            if (rotation == 0) rotateI(new int[4] { 0, 1, 0, -1 }, new int[4] { -2, 1, 0, -1 });
+            else if (rotation == 1) rotateI(new int[4] { -2, 1, 0, -1 }, new int[4] { 0, -1, 0, 1 });
+            else if (rotation == 2) rotateI(new int[4] { 0, -1, 0, 1 }, new int[4] { 2, -1, 0, 1 });
+            else if (rotation == 3) rotateI(new int[4] { 2, -1, 0, 1 }, new int[4] { 0, 1, 0, -1 });
         }
     }
     void moveDown()
@@ -290,6 +296,36 @@ public class MainBehaviour : MonoBehaviour
             {
                 field[y[i], x[i]].Number = 5;
             }
+
+            GameObject[] gameObjects = GameObject.FindObjectsOfType<GameObject>();
+
+            //line detection
+            for (int i = 0; i < 22; i++)
+            {
+                bool isLine = true;
+                for (int j = 0; j < 10; j++)
+                {
+                    if (field[i, j].Number != 5)
+                    {
+                        isLine = false;
+                    }
+                }
+                if (isLine)
+                {
+                    for (int j = 0; j < 10; j++)
+                    {
+                        foreach (GameObject item in gameObjects)
+                        {
+                            if (item.transform.position.x == j && item.transform.position.y == i)
+                            {
+                                item.GetComponent<Renderer>().material.SetColor("_Color", Color.black);
+                            }
+                        }
+                    }
+                }
+            }
+
+
 
             if (spawnPiece == -1) spawn(Random.Range(0, 7));
             else spawn(spawnPiece);
