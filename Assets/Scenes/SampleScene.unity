@@ -404,5 +404,5 @@ MonoBehaviour:
   debugblock: {fileID: 2884815995316932227, guid: 227b9738994ce1e458f1471cee4c8991,
     type: 3}
   goDown: 1
-  spawnPiece: -1
+  spawnPiece: 0
   fallingSpeed: 0.2
