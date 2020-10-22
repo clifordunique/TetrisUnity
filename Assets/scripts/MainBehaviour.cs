@@ -3,6 +3,18 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+/* things to do:
+
+make code better 
+make ghost image of block on bottom
+add next piece window
+remember a piece
+score
+menu
+2 player
+online mp?
+
+*/
 public class MainBehaviour : MonoBehaviour
 {
     public GameObject prefabTetramino;
@@ -16,6 +28,7 @@ public class MainBehaviour : MonoBehaviour
     int[] y = new int[4];
     int currentPiece = -1;
     int rotation = -1;
+    bool pressedSpace = false;
 
     void Update()
     {
@@ -33,18 +46,39 @@ public class MainBehaviour : MonoBehaviour
             }
             Debug.Log(a);
         }
-        if (Input.GetKeyDown(KeyCode.RightArrow))
+
+        if (!pressedSpace)
         {
-            moveLeftRight(1);
-        }
-        if (Input.GetKeyDown(KeyCode.LeftArrow))
+            if (Input.GetKeyDown(KeyCode.RightArrow))
+            {
+                moveLeftRight(1);
+            }
+            if (Input.GetKeyDown(KeyCode.LeftArrow))
+            {
+                moveLeftRight(-1);
+            }
+            if (Input.GetKeyDown(KeyCode.UpArrow))
+            {
+                rotate();
+            }
+            if (Input.GetKeyDown(KeyCode.DownArrow))
+            {
+                speedUp();
+            }
+            if (Input.GetKeyUp(KeyCode.DownArrow))
+            {
+                //should figure out how to pause an invoke but this probably has a minimal effect on gameplay
+                CancelInvoke();
+                InvokeRepeating("moveDown", fallingSpeed, fallingSpeed);
+            }
+        }      
+        if (Input.GetKeyDown(KeyCode.Space))
         {
-            moveLeftRight(-1);
+            pressedSpace = true;
+            speedUp(0.00002f);          
         }
-        if (Input.GetKeyDown(KeyCode.UpArrow))
-        {
-            rotate();
-        }
+
+
     }
     void Start()
     {
@@ -67,6 +101,11 @@ public class MainBehaviour : MonoBehaviour
 
     }
 
+    void speedUp(float fs = 0.05f)
+    {
+        CancelInvoke();
+        InvokeRepeating("moveDown", fs, fs);
+    }
     void findTetraminoes(bool setToZero = true)
     {
         x = new int[4];
@@ -303,7 +342,7 @@ public class MainBehaviour : MonoBehaviour
 
             for (int i = 0; i < 22; i++)
             {
-                
+
                 bool isLine = true;
                 for (int j = 0; j < 10; j++)
                 {
@@ -345,7 +384,13 @@ public class MainBehaviour : MonoBehaviour
                 }
             }
 
-
+            if (pressedSpace)
+            {
+                CancelInvoke();
+                InvokeRepeating("moveDown", fallingSpeed, fallingSpeed);
+                pressedSpace = false;
+            }
+            
 
             if (spawnPiece == -1) spawn(Random.Range(0, 7));
             else spawn(spawnPiece);
